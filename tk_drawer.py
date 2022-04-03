@@ -35,8 +35,6 @@ class TkDrawer:
 
     # Стирание существующей картинки и рисование осей координат
     def clean(self):
-        self.canvas.arrow(SIZE,SIZE/2,fill="blue")
-        self.canvas.arrow(SIZE/2,SIZE,fill="blue")
         self.canvas.create_rectangle(0, 0, SIZE, SIZE, fill="white")
         self.canvas.create_line(0, SIZE / 2, SIZE, SIZE / 2, fill="blue")
         self.canvas.create_line(SIZE / 2, 0, SIZE / 2, SIZE, fill="blue")

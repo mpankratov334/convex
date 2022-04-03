@@ -64,6 +64,7 @@ class Polygon(Figure):
         self._perimeter = a.dist(b) + b.dist(c) + c.dist(a)
         self._area = abs(R2Point.area(a, b, c))
 
+
     def perimeter(self):
         return self._perimeter
 
@@ -81,6 +82,7 @@ class Polygon(Figure):
 
         # хотя бы одно освещённое ребро есть
         if t.is_light(self.points.last(), self.points.first()):
+
 
             # учёт удаления ребра, соединяющего конец и начало дека
             self._perimeter -= self.points.first().dist(self.points.last())
@@ -110,6 +112,15 @@ class Polygon(Figure):
             self.points.push_first(t)
 
         return self
+
+        # проверка точки на принадлежность к оболочке
+    def is_inside_convex(self, A):
+        for n in range(self.points.size()):
+            if A.is_light(self.points.last(), self.points.first()):
+                return False
+            self.points.push_last(self.points.pop_first())
+        return True
+
 
 
 if __name__ == "__main__":
