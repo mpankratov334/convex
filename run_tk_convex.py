@@ -59,7 +59,7 @@ try:
             point2 = f.points.last()
             if check(A.x, A.y, B.x, B.y, point1.x, point1.y,
                                     point2.x, point2.y) is not None:
-                g = g.add(check(C.x, C.y, A.x, A.y, point1.x, point1.y,
+                g = g.add(check(A.x, A.y, B.x, B.y, point1.x, point1.y,
                                     point2.x, point2.y))
             f.points.push_last(f.points.pop_first())
         for n in range(f.points.size()):
@@ -67,7 +67,7 @@ try:
             point2 = f.points.last()
             if check(B.x, B.y, C.x, C.y, point1.x, point1.y,
                                     point2.x, point2.y) is not None:
-                g = g.add(check(C.x, C.y, A.x, A.y, point1.x, point1.y,
+                g = g.add(check(B.x, B.y, C.x, C.y, point1.x, point1.y,
                                     point2.x, point2.y))
             f.points.push_last(f.points.pop_first())
         for n in range(f.points.size()):
@@ -189,7 +189,6 @@ try:
                 if default_triangle.is_inside_convex(w):
                     # print( f"точка W добавлена")
                     g = g.add(w)
-
                 else:
                     if f.is_inside_convex(A):
                         g = g.add(A)

@@ -21,27 +21,40 @@ try:
     g = Void()
     # проверка всех рёбер на пересечение с ребром треугольника
     # и добавление точек пересечения
+    # AB
+    #print("проверка AB")
     for n in range(f.points.size()):
         point1 = f.points.first()
         point2 = f.points.last()
         if check(A.x, A.y, B.x, B.y, point1.x, point1.y,
                                 point2.x, point2.y) is not None:
-            g = g.add(check(C.x, C.y, A.x, A.y, point1.x, point1.y,
+            #print("Добавление")
+            #print(f"({check(A.x, A.y, B.x, B.y, point1.x, point1.y,
+            #                    point2.x, point2.y).x},
+            #                 {check(C.x, C.y, A.x, A.y, point1.x, point1.y,
+            #                                        point2.x, point2.y).y})")
+            g = g.add(check(A.x, A.y, B.x, B.y, point1.x, point1.y,
                                 point2.x, point2.y))
         f.points.push_last(f.points.pop_first())
+    # BC
+    #print("проверка BС")
     for n in range(f.points.size()):
         point1 = f.points.first()
         point2 = f.points.last()
         if check(B.x, B.y, C.x, C.y, point1.x, point1.y,
                                 point2.x, point2.y) is not None:
-            g = g.add(check(C.x, C.y, A.x, A.y, point1.x, point1.y,
+            #print("Добавление")
+            g = g.add(check(B.x, B.y, C.x, C.y, point1.x, point1.y,
                                 point2.x, point2.y))
         f.points.push_last(f.points.pop_first())
+    # CA
+    #print("проверка СA")
     for n in range(f.points.size()):
         point1 = f.points.first()
         point2 = f.points.last()
         if check(C.x, C.y, A.x, A.y, point1.x, point1.y,
                                 point2.x, point2.y) is not None:
+            #print("Добавление")
             g = g.add(check(C.x, C.y, A.x, A.y, point1.x, point1.y,
                                 point2.x, point2.y))
         f.points.push_last(f.points.pop_first())
@@ -54,6 +67,7 @@ try:
     for n in range(f.points.size()):
         if default_triangle.is_inside_convex(f.points.first()):
             g = g.add(f.points.first())
+            #print("Добавлена внутри Треугольника")
         f.points.push_last(f.points.pop_first())
     # добавление к оболочке g вершины треугольника, если она принадлежит
     # оболочке f
@@ -78,6 +92,7 @@ try:
             # AB
             #print(f"f.points.first() = {f.points.first().x, f.points.first().y}")
             #print(f"f.points.last() = {f.points.last().x, f.points.last().y}")
+            #print("проверка AB")
             if check(A.x, A.y, B.x, B.y, f.points.first().x,
                             f.points.first().y, f.points.last().x,
                             f.points.last().y) is not None:
@@ -90,61 +105,62 @@ try:
 
 
             f.points.push_last(f.points.pop_first())
-            # print(f"f.points.first() = {f.points.first().x, f.points.first().y}")
-            # print(f"f.points.last() = {f.points.last().x, f.points.last().y}")
+            #print("повернули")
+            #print(f"f.points.first() = {f.points.first().x, f.points.first().y}")
+            #print(f"f.points.last() = {f.points.last().x, f.points.last().y}")
 
             if check(A.x, A.y, B.x, B.y, f.points.first().x,
                             f.points.first().y, f.points.last().x,
                             f.points.last().y) is not None:
-                # print("\nДобавление")
-                # print(f"f.points.first() = {f.points.first().x, f.points.first().y}")
-                # print(f"f.points.last() = {f.points.last().x, f.points.last().y}")
+                #print("\nДобавление")
                 g = g.add(check(A.x, A.y, B.x, B.y, f.points.first().x,
                                     f.points.first().y, f.points.last().x,
                                                     f.points.last().y))
             # BC
+            #print("проверка BC")
             if check(B.x, B.y, C.x, C.y, f.points.first().x,
                             f.points.first().y, f.points.last().x,
                             f.points.last().y) is not None:
-                # print("\nДобавление")
-                # print(f"f.points.first() = {f.points.first().x, f.points.first().y}")
-                # print(f"f.points.last() = {f.points.last().x, f.points.last().y}")
+                #print("\nДобавление")
                 g = g.add(check(B.x, B.y, C.x, C.y, f.points.first().x,
                                     f.points.first().y, f.points.last().x,
                                                     f.points.last().y))
 
             f.points.push_first(f.points.pop_last())
-            # print(f"f.points.first() = {f.points.first().x, f.points.first().y}")
-            # print(f"f.points.last() = {f.points.last().x, f.points.last().y}")
+            #print("повернули")
+            #print(f"f.points.first() = {f.points.first().x, f.points.first().y}")
+            #print(f"f.points.last() = {f.points.last().x, f.points.last().y}")
 
             if check(B.x, B.y, C.x, C.y, f.points.first().x,
                             f.points.first().y, f.points.last().x,
                             f.points.last().y) is not None:
-                # print("\nДобавление")
-                # print(f"f.points.first() = {f.points.first().x, f.points.first().y}")
-                # print(f"f.points.last() = {f.points.last().x, f.points.last().y}")
+                #print("\nДобавление")
                 g = g.add(check(B.x, B.y, C.x, C.y, f.points.first().x,
                                     f.points.first().y, f.points.last().x,
                                                     f.points.last().y))
             # AC (ООП.в.дей(ств).ии)
+            #print("проверка AC")
             if check(C.x, C.y, A.x, A.y, f.points.first().x,
                             f.points.first().y, f.points.last().x,
                             f.points.last().y) is not None:
-                # print("\nДобавление")
-                # print(f"f.points.first() = {f.points.first().x, f.points.first().y}")
-                # print(f"f.points.last() = {f.points.last().x, f.points.last().y}")
+                #print("\nДобавление")
+                #print(f"f.points.first() = {f.points.first().x, f.points.first().y}")
+                #print(f"f.points.last() = {f.points.last().x, f.points.last().y}")
                 g = g.add(check(C.x, C.y, A.x, A.y, f.points.first().x,
                                     f.points.first().y, f.points.last().x,
                                                     f.points.last().y))
 
             f.points.push_last(f.points.pop_first())
+            #print("повернули")
+            #print(f"f.points.first() = {f.points.first().x, f.points.first().y}")
+            #print(f"f.points.last() = {f.points.last().x, f.points.last().y}")
 
             if check(C.x, C.y, A.x, A.y, f.points.first().x,
                             f.points.first().y, f.points.last().x,
                             f.points.last().y) is not None:
-                # print("\nДобавление")
-                # print(f"f.points.first() = {f.points.first().x, f.points.first().y}")
-                # print(f"f.points.last() = {f.points.last().x, f.points.last().y}")
+                #print("\nДобавление")
+                #print(f"f.points.first() = {f.points.first().x, f.points.first().y}")
+                #print(f"f.points.last() = {f.points.last().x, f.points.last().y}")
                 g = g.add(check(C.x, C.y, A.x, A.y, f.points.first().x,
                                     f.points.first().y, f.points.last().x,
                                                     f.points.last().y))
@@ -152,15 +168,18 @@ try:
 
         # добавление новой точки если она лежит строго внутри треугольника
             if default_triangle.is_inside_convex(w):
-                # print( f"точка W добавлена")
+                #print( f"точка W добавлена")
                 g = g.add(w)
 
             else:
                 if f.is_inside_convex(A):
+                    #print("точка А добавлена")
                     g = g.add(A)
                 if f.is_inside_convex(B):
+                    #print("точка B добавлена")
                     g = g.add(B)
                 if f.is_inside_convex(C):
+                    #print("точка C добавлена")
                     g = g.add(C)
         print(f"S = {f.area()}, P = {f.perimeter()}")
         print()
