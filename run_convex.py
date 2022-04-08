@@ -14,8 +14,6 @@ try:
     while f.area() == 0:
         print("площадь пересечения равна 0")
         f = f.add(R2Point())
-        tk.clean()
-        f.draw(tk)
         print(f"S = {f.area()}, P = {f.perimeter()}")
 
     # создание фигуры, принадлежащей фигуре f и лежащей внутри треугольника
@@ -75,8 +73,6 @@ try:
         w = R2Point()
         if not f.is_inside_convex(w):
             f = f.add(w)
-            tk.clean()
-            f.draw(tk)
             # проверка двух последних добавленных рёбер на пресечение с
             # рёбрами треугольника ABC и добавление новых точек пересеничя
             # AB
