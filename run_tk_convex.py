@@ -41,11 +41,18 @@ try:
         A = R2Point()
         B = R2Point()
         C = R2Point()
+        tk.clean()
+        default_triangle = Void()
+        default_triangle = default_triangle.add(A)
+        default_triangle = default_triangle.add(B)
+        default_triangle = default_triangle.add(C)
+        default_triangle.draw(tk)
         print("Введите фигуру")
         while f.area() == 0:
             print("площадь пересечения равна 0")
             f = f.add(R2Point())
             tk.clean()
+            default_triangle.draw(tk)
             f.draw(tk)
             print(f"S = {f.area()}, P = {f.perimeter()}")
 
@@ -80,10 +87,6 @@ try:
             f.points.push_last(f.points.pop_first())
 
         # добавление к оболочке g точек, лежащих внутри треугольника
-        default_triangle = Void()
-        default_triangle = default_triangle.add(A)
-        default_triangle = default_triangle.add(B)
-        default_triangle = default_triangle.add(C)
         for n in range(f.points.size()):
             if default_triangle.is_inside_convex(f.points.first()):
                 g = g.add(f.points.first())
@@ -107,6 +110,7 @@ try:
             if not f.is_inside_convex(w):
                 f = f.add(w)
                 tk.clean()
+                default_triangle.draw(tk)
                 f.draw(tk)
                 # проверка двух последних добавленных рёбер на пресечение с
                 # рёбрами треугольника ABC и добавление новых точек пересеничя

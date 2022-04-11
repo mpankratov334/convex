@@ -1,5 +1,9 @@
 from r2point import R2Point
+"""
+   Возвращает None если даны 4 точки, лежащие на одной прямой.
+   Запрещено повторять точки
 
+"""
 
 def check(ax, ay, bx, by, x1, y1, x2, y2):
     dx, dy = ax - bx, ay - by
@@ -15,7 +19,7 @@ def check(ax, ay, bx, by, x1, y1, x2, y2):
         #p_x и p_y - координаты пересечения двух прямых
             p_y = c / dx
             p_x = (p_y * dx12 - c12) / dy12
-            print(f"{p_x}, {p_y}")
+            #print(f"{p_x}, {p_y}")
             if ( min(x1, x2) <= p_x <= max(x1, x2) and
                 min(y1, y2) <= p_y <= max(y1, y2) and
                 min(ax, bx) <= p_x <= max(bx, ax) and
