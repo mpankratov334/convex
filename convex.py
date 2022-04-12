@@ -1,5 +1,6 @@
 from deq import Deq
 from r2point import R2Point
+from check import check
 
 
 class Figure:
@@ -121,6 +122,58 @@ class Polygon(Figure):
             self.points.push_last(self.points.pop_first())
         return True
 
+        # проверка всех рёбер оболочки на пересечение с прямой
+        # и добавление точек пересения в другую оболочку Ribs Cross Add
+    def RBA(self, other, A, B):
+        for n in range(self.points.size()):
+            point1 = self.points.first()
+            point2 = self.points.last()
+            if check(A.x, A.y, B.x, B.y, point1.x, point1.y,
+                                    point2.x, point2.y) is not None:
+                #print("Добавление")
+                #print(f"({check(A.x, A.y, B.x, B.y, point1.x, point1.y,
+                #                    point2.x, point2.y).x},
+                #                 {check(C.x, C.y, A.x, A.y, point1.x, point1.y,
+                #                                        point2.x, point2.y).y})")
+                other = other.add(check(A.x, A.y, B.x, B.y, point1.x, point1.y,
+                                    point2.x, point2.y))
+            self.points.push_last(self.points.pop_first())
+
+        return other
+
+        # RBA для трёх прямых одного треугольника
+    def RBA3(self, other, A, B, C):
+        ab_checked = RBA(self, other, A, B)
+        ab_bc_checked = RBA(self, ab_checked, B, C)
+        return RBA(self, ab_bc_checked, C, A)
+
+        # добавление к другой оболочке точек, лежащих внутри треугольника
+        # Add Inside Triangle
+    def AIT(self, other, A, B, C):
+        default_triangle = Void()
+        default_triangle = default_triangle.add(A)
+        default_triangle = default_triangle.add(B)
+        default_triangle = default_triangle.add(C)
+        for n in range(self.points.size()):
+            if default_triangle.is_inside_convex(self.points.first()):
+                other = other.add(f.points.first())
+                #print("Добавлена внутри Треугольника")
+            self.points.push_last(self.points.pop_first())
+        return other
+
+        # добавление к другой оболочке вершины треугольника, если
+        # она принадлежит оболочке f Add Inside Convex
+    def AIC(self, other, A, B, C):
+        if self.is_inside_convex(A):
+            #print("точка A добавлена")
+            other = other.add(A)
+        if self.is_inside_convex(B):
+            #print("точка B добавлена")
+            other = other.add(B)
+        if self.is_inside_convex(C):
+            #print("точка C добавлена")
+            other = other.add(C)
+        return other
 
 
 if __name__ == "__main__":

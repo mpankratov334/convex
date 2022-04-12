@@ -21,66 +21,12 @@ try:
     g = Void()
     # проверка всех рёбер на пересечение с ребром треугольника
     # и добавление точек пересечения
-    # AB
-    #print("проверка AB")
-    for n in range(f.points.size()):
-        point1 = f.points.first()
-        point2 = f.points.last()
-        if check(A.x, A.y, B.x, B.y, point1.x, point1.y,
-                                point2.x, point2.y) is not None:
-            #print("Добавление")
-            #print(f"({check(A.x, A.y, B.x, B.y, point1.x, point1.y,
-            #                    point2.x, point2.y).x},
-            #                 {check(C.x, C.y, A.x, A.y, point1.x, point1.y,
-            #                                        point2.x, point2.y).y})")
-            g = g.add(check(A.x, A.y, B.x, B.y, point1.x, point1.y,
-                                point2.x, point2.y))
-        f.points.push_last(f.points.pop_first())
-    # BC
-    #print("проверка BС")
-    for n in range(f.points.size()):
-        point1 = f.points.first()
-        point2 = f.points.last()
-        if check(B.x, B.y, C.x, C.y, point1.x, point1.y,
-                                point2.x, point2.y) is not None:
-            #print("Добавление")
-            g = g.add(check(B.x, B.y, C.x, C.y, point1.x, point1.y,
-                                point2.x, point2.y))
-        f.points.push_last(f.points.pop_first())
-    # CA
-    #print("проверка СA")
-    for n in range(f.points.size()):
-        point1 = f.points.first()
-        point2 = f.points.last()
-        if check(C.x, C.y, A.x, A.y, point1.x, point1.y,
-                                point2.x, point2.y) is not None:
-            #print("Добавление")
-            g = g.add(check(C.x, C.y, A.x, A.y, point1.x, point1.y,
-                                point2.x, point2.y))
-        f.points.push_last(f.points.pop_first())
-
+    g = f.RBA3(g, A, B, C)
     # добавление к оболочке g точек, лежащих внутри треугольника
-    default_triangle = Void()
-    default_triangle = default_triangle.add(A)
-    default_triangle = default_triangle.add(B)
-    default_triangle = default_triangle.add(C)
-    for n in range(f.points.size()):
-        if default_triangle.is_inside_convex(f.points.first()):
-            g = g.add(f.points.first())
-            #print("Добавлена внутри Треугольника")
-        f.points.push_last(f.points.pop_first())
+    g = f.AIT(g, A, B, C)
     # добавление к оболочке g вершины треугольника, если она принадлежит
     # оболочке f
-    if f.is_inside_convex(A):
-        #print("точка A добавлена")
-        g = g.add(A)
-    if f.is_inside_convex(B):
-        #print("точка B добавлена")
-        g = g.add(B)
-    if f.is_inside_convex(C):
-        #print("точка C добавлена")
-        g = g.add(C)
-
+    g = f.AIC(g, A, B, C)
 
     while True:
         print(f"площадь пересечения : {g.area()} ")
