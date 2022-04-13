@@ -143,9 +143,9 @@ class Polygon(Figure):
 
         # RBA для трёх прямых одного треугольника
     def RBA3(self, other, A, B, C):
-        ab_checked = RBA(self, other, A, B)
-        ab_bc_checked = RBA(self, ab_checked, B, C)
-        return RBA(self, ab_bc_checked, C, A)
+        ab_checked = self.RBA(other, A, B)
+        ab_bc_checked = self.RBA(ab_checked, B, C)
+        return self.RBA(ab_bc_checked, C, A)
 
         # добавление к другой оболочке точек, лежащих внутри треугольника
         # Add Inside Triangle
@@ -156,13 +156,13 @@ class Polygon(Figure):
         default_triangle = default_triangle.add(C)
         for n in range(self.points.size()):
             if default_triangle.is_inside_convex(self.points.first()):
-                other = other.add(f.points.first())
+                other = other.add(self.points.first())
                 #print("Добавлена внутри Треугольника")
             self.points.push_last(self.points.pop_first())
         return other
 
         # добавление к другой оболочке вершины треугольника, если
-        # она принадлежит оболочке f Add Inside Convex
+        # она принадлежит оболочке  Add Inside Convex
     def AIC(self, other, A, B, C):
         if self.is_inside_convex(A):
             #print("точка A добавлена")
@@ -174,6 +174,77 @@ class Polygon(Figure):
             #print("точка C добавлена")
             other = other.add(C)
         return other
+
+        # проверка последнего добавленного рёбра фигуры
+        # на пересечение с прямой и добавление новых точек пересения, если
+        # такие есть
+    def check_last(self, other, A, B):
+        #print(f"f.points.first() = {f.points.first().x, f.points.first().y}")
+        #print(f"f.points.last() = {f.points.last().x, f.points.last().y}")
+        #print("проверка AB")
+        if check(A.x, A.y, B.x, B.y, self.points.first().x,
+                        self.points.first().y, self.points.last().x,
+                        self.points.last().y) is not None:
+        #print("\nДобавление")
+        #print(f"f.points.first() = {f.points.first().x, f.points.first().y}")
+        #print(f"f.points.last() = {f.points.last().x, f.points.last().y}")
+            other = other.add(check(A.x, A.y, B.x, B.y, self.points.first().x,
+                                self.points.first().y, self.points.last().x,
+                                                self.points.last().y))
+        return other
+
+        # проверка двух последних добавленных рёбер
+        # фигуры на пересечение рёбрами с треугольником
+        # и добавление точек пересения
+    def check_last_triangle(self, other, A, B, C):
+
+        ab1 = self.check_last(other, A, B)
+        self.points.push_last(self.points.pop_first())
+        ab2 = self.check_last(ab1, A, B)
+        bc1 = self.check_last(ab2, B, C)
+        self.points.push_first(self.points.pop_last())
+        bc2 = self.check_last(bc1, B, C)
+        ac1 = self.check_last(bc2, A, C)
+        self.points.push_last(self.points.pop_first())
+        return self.check_last(ac1, A, C)
+
+        # добавление новой точки если она лежит строго внутри треугольника
+        # иначе добавление вершин треугольника, которые лежат внутри этой фигуры
+    def aic_fast(self, other, w, A, C, B):
+        default_triangle = Void()
+        default_triangle = default_triangle.add(A)
+        default_triangle = default_triangle.add(B)
+        default_triangle = default_triangle.add(C)
+        if default_triangle.is_inside_convex(w):
+            #print( f"точка W добавлена")
+            other = other.add(w)
+        else:
+            if self.is_inside_convex(A):
+                #print("точка А добавлена")
+                other = other.add(A)
+            if self.is_inside_convex(B):
+                #print("точка B добавлена")
+                other = other.add(B)
+            if self.is_inside_convex(C):
+                #print("точка C добавлена")
+                other = other.add(C)
+        return other
+
+        # индуктивное расширение G(F)
+    def induction(self, g, w, A, B, C):
+        if not self.is_inside_convex(w):
+            self = self.add(w)
+            other = self.check_last_triangle(g, A, B, C)
+            other = self.aic_fast(g, w, A, B, C)
+        return self
+
+        # s` = 0
+    def pre_induction(self, A, B, C):
+        g = Void()
+        g = self.RBA3(g, A, B, C)
+        g = self.AIT(g, A, B, C)
+        g = self.AIC(g, A, B, C)
+        return g
 
 
 if __name__ == "__main__":
