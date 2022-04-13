@@ -162,3 +162,70 @@ class TestPolygon:
 
     def test_area2(self):
         assert self.f.add(R2Point(1.0, 1.0)).area() == approx(1.0)
+
+class TestIductions1:
+
+    # Инициализация треугольника
+    A = R2Point(4.0,0.0)
+    B = R2Point(-4.0,0.0)
+    C = R2Point(0.0,4.0)
+
+    def setup_method(self):
+        self.f = Void()
+        self.f = self.f.add(R2Point(2.0, 2.0))
+        self.f = self.f.add(R2Point(5.0, -1.0))
+    def test_cross_area1(self):
+        g = self.f.add(R2Point(-4.0,
+                0.0)).pre_induction(self.A,
+                    self.B, self.C)
+        assert g.area() == approx(8.0)
+
+    def test_cross_area2(self):
+
+        self.f = self.f.add(R2Point(-4.0,0.0))
+        g = self.f.pre_induction(self.A, self.B, self.C)
+        self.f = self.f.induction(g, R2Point(-5.0, 0.0),
+                                self.A, self.B, self.C)
+        self.f = self.f.induction(g, R2Point(-2.0, 2.0),
+                                self.A, self.B, self.C)
+        assert g.area() == approx(12.0)
+
+class TestIductions2:
+
+    # Инициализация треугольника
+    A = R2Point(5.0,0.0)
+    B = R2Point(0.0,0.0)
+    C = R2Point(0.0,5.0)
+
+    def setup_method(self):
+        self.f = Void()
+        self.f = self.f.add(R2Point(4.0, -1.0))
+        self.f = self.f.add(R2Point(4.0, 2.0))
+
+    def test_cross_area1(self):
+        g = self.f.add(R2Point(5.5,
+                0.0)).pre_induction(self.A,
+                    self.B, self.C)
+        assert g.area() == approx(0.5)
+
+    def test_cross_area2(self):
+
+        self.f = self.f.add(R2Point(5.5, 0.0))
+        g = self.f.pre_induction(self.A, self.B, self.C)
+        self.f = self.f.induction(g, R2Point(-1.0, -1.0),
+                                self.A, self.B, self.C)
+        self.f = self.f.induction(g, R2Point(5.0, 5.0),
+                                self.A, self.B, self.C)
+        assert g.area() == approx(6.25)
+
+        self.f = self.f.induction(g, R2Point(1000.0, 1000.0),
+                                self.A, self.B, self.C)
+        assert g.area() ==  approx(6.25)
+
+        self.f = self.f.induction(g, R2Point(666.666, 666.0),
+                                self.A, self.B, self.C)
+        assert g.area() ==  approx(6.25)
+
+        self.f = self.f.induction(g, R2Point(-1.0, 6.0),
+                                self.A, self.B, self.C)
+        assert g.area() ==  approx(12.5)
