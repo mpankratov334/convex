@@ -156,7 +156,7 @@ class Polygon(Figure):
         default_triangle = default_triangle.add(C)
         for n in range(self.points.size()):
             if default_triangle.is_inside_convex(self.points.first()):
-                other = other.add(f.points.first())
+                other = other.add(self.points.first())
                 #print("Добавлена внутри Треугольника")
             self.points.push_last(self.points.pop_first())
         return other
