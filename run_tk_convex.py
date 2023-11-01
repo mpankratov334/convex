@@ -37,7 +37,8 @@ try:
         f = f.add(R2Point())
         tk.clean()
         f.draw(tk)
-        print(f"S = {f.area()}, P = {f.perimeter()}, Sum_squares = {f.sum_squares()}\n")
-except(EOFError, KeyboardInterrupt):
+        print(f"S = {f.area()}, P = {f.perimeter()}")
+        print("Sum_squares = {f.sum_squares()}\n")
+except (EOFError, KeyboardInterrupt):
     print("\nStop")
     tk.close()
