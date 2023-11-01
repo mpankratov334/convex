@@ -125,7 +125,7 @@ class Polygon(Figure):
             p = self.points.pop_last()
             while t.is_light(self.points.last(), p):
                 self._perimeter -= p.dist(self.points.last())
-                self._sum_squares -= Segment(self.points.last(), 
+                self._sum_squares -= Segment(self.points.last(),
                                              p).sum_squares()
                 self._area += abs(R2Point.area(t, p, self.points.last()))
                 p = self.points.pop_last()
