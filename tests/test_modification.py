@@ -45,7 +45,8 @@ class TestModification:
         self.quadro = self.quadro.add(R2Point(1, 1))
         self.quadro = self.quadro.add(R2Point(-1, 1))
         self.quadro = self.quadro.add(R2Point(1, -1))
-        self.quadro = self.quadro.add(R2Point(-1, -1))  # здесь удаляется сторона
+        # Далее удаляется сторона
+        self.quadro = self.quadro.add(R2Point(-1, -1))
         assert self.quadro.sum_squares() == approx(4)
 
     # Проверка при удалении трёх сторон
