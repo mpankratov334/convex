@@ -7,7 +7,7 @@ try:
     while True:
         f = f.add(R2Point())
         print(f"S = {f.area()}, P = {f.perimeter()}")
-        print(f"Sum Squares = {f.sum_squares()}"))
+        print(f"Sum Squares = {f.sum_squares()}")
         print()
 except (EOFError, KeyboardInterrupt):
     print("\nStop")
